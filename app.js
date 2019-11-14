@@ -5,6 +5,7 @@ const layout = require("./views/layout");
 const models = require("./models");
 const wiki = require("./routes/wiki");
 const user = require("./routes/user");
+const {Page} = require("./models");
 
 models.db.authenticate().then(() => {
   console.log("connected to the database :)");
@@ -17,6 +18,10 @@ app.use("/wiki", wiki);
 app.use("/user", user);
 
 app.get("/", (req, res) => {
+
+  const allPages = Page.findAll();
+  console.log(allPages);
+
   res.redirect("/wiki");
 });
 
