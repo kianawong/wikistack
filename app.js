@@ -6,6 +6,7 @@ const models = require("./models");
 const wiki = require("./routes/wiki");
 const user = require("./routes/user");
 const {Page} = require("./models");
+const main = require("./views/main");
 
 models.db.authenticate().then(() => {
   console.log("connected to the database :)");
@@ -17,10 +18,10 @@ app.use(express.urlencoded({ extended: false }));
 app.use("/wiki", wiki);
 app.use("/user", user);
 
-app.get("/", (req, res) => {
+app.get("/", async (req, res) => {
 
-  const allPages = Page.findAll();
-  console.log(allPages);
+  const allPages = await Page.findAll()
+  res.send(main(allPages))
 
   res.redirect("/wiki");
 });

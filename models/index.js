@@ -30,7 +30,11 @@ const Page = db.define("page", {
 Page.addHook("beforeValidate", page => {
   page.slug = page.title.replace(/\s+/g, `_`).replace(/\W/g, "");
   console.log("page:", page);
+
+
 });
+
+
 
 const User = db.define("user", {
   name: {
@@ -46,6 +50,10 @@ const User = db.define("user", {
     validate: { isEmail: true }
   }
 });
+
+
+Page.belongsTo(User, { as: 'author' });
+
 
 module.exports = {
   db,

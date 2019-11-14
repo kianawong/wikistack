@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const addPage = require("../views/addPage");
-const { Page } = require("../models");
+const { Page, User } = require("../models");
 const wikiPage = require("../views/wikipage");
 
 router.get("/", async (req, res) => {
@@ -14,13 +14,21 @@ router.post("/", async (req, res, next) => {
     content: req.body.content,
     status: req.body.status
   });
+  const user = new User({
+    name: req.body.author,
+    email: req.body.email
+  })
 
   try {
     await page.save();
+    await user.save();
     res.redirect(`/wiki/${page.slug}`);
   } catch (error) {
     next(error);
   }
+
+
+
 });
 
 router.get("/add", async (req, res) => {
